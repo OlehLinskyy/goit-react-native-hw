@@ -7,8 +7,11 @@ import {
   Pressable,
   TouchableWithoutFeedback,
   Keyboard,
+  ImageBackground,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
+import PhoneImage from "../images/Phone.png";
 
 export const useTogglePasswordVisibility = () => {
   const [passwordVisibility, setPasswordVisibility] = useState(true);
@@ -36,53 +39,73 @@ function LoginScreen() {
     useTogglePasswordVisibility();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigation = useNavigation();
 
   const onLogin = () => {
-    console.log({email,password});
+    console.log({ email, password });
+    navigation.navigate("Home");
   };
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={styles.loginScreen}>
-        <Text style={styles.login}>Увійти</Text>
-        <TextInput
-          value={email}
-          onChangeText={setEmail}
-          style={styles.input}
-          placeholder="Адреса електронної пошти"
-          placeholderTextColor="#BDBDBD"
-        />
-        <TextInput
-          value={password}
-          onChangeText={setPassword}
-          style={styles.input}
-          placeholder="пароль" 
-          placeholderTextColor="#BDBDBD"
-          secureTextEntry={passwordVisibility}
-        />
-        <Pressable
-          style={styles.visibilPassword}
-          onPress={handlePasswordVisibility}
-        >
-          <Text style={styles.visibil}>
-            {passwordVisibility ? "Показати" : "Сховати"}
-          </Text>
-        </Pressable>
-        <TouchableOpacity style={styles.button} onPress={onLogin}>
-          <Text style={styles.textButton}>Увійти</Text>
-        </TouchableOpacity>
-        <View style={styles.registration}>
-          <Text style={styles.toregistration}>Немає акаунту?</Text>
-          <TouchableOpacity>
-            <Text style={styles.toregistration}> Зареєструватися</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+      <ImageBackground
+        source={PhoneImage}
+        resizeMode="cover"
+        style={styles.image}
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.loginScreen}>
+            <Text style={styles.login}>Увійти</Text>
+            <TextInput
+              value={email}
+              onChangeText={setEmail}
+              style={styles.input}
+              placeholder="Адреса електронної пошти"
+              placeholderTextColor="#BDBDBD"
+            />
+            <TextInput
+              value={password}
+              onChangeText={setPassword}
+              style={styles.input}
+              placeholder="пароль"
+              placeholderTextColor="#BDBDBD"
+              secureTextEntry={passwordVisibility}
+            />
+            <Pressable
+              style={styles.visibilPassword}
+              onPress={handlePasswordVisibility}
+            >
+              <Text style={styles.visibil}>
+                {passwordVisibility ? "Показати" : "Сховати"}
+              </Text>
+            </Pressable>
+            <TouchableOpacity style={styles.button} onPress={onLogin}>
+              <Text style={styles.textButton}>Увійти</Text>
+            </TouchableOpacity>
+            <View style={styles.registration}>
+              <Text style={styles.toregistration}>Немає акаунту?</Text>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("Registration")}
+              >
+                <Text style={styles.toregistration}> Зареєструватися</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </ImageBackground>
     </TouchableWithoutFeedback>
   );
 }
 export default LoginScreen;
 
 const styles = StyleSheet.create({
+  image: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    flexDirection: "column-reverse",
+  },
   loginScreen: {
     backgroundColor: "#FFFFFF",
     height: 549,

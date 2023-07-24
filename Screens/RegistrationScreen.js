@@ -8,9 +8,12 @@ import {
   Pressable,
   TouchableWithoutFeedback,
   Keyboard,
+  ImageBackground,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import closeButton from "../images/add.png";
+import PhoneImage from "../images/Phone.png";
 
 export const useTogglePasswordVisibility = () => {
   const [passwordVisibility, setPasswordVisibility] = useState(true);
@@ -39,63 +42,83 @@ function RegistrationScreen() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const navigation = useNavigation();
   const onRegistration = () => {
-    console.log({name,password,email,});
+    console.log({ name, password, email });
+    navigation.navigate("Home");
   };
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={styles.registrationScreen}>
-        <View style={styles.registrationAvatar}></View>
-        <Image style={styles.closeButton} source={closeButton} />
-        <Text style={styles.registration}>Реєстрація</Text>
-        <TextInput
-          value={name}
-          onChangeText={setName}
-          onFocus={this.focusedInput}
-          style={styles.input}
-          placeholder="Логін"
-          placeholderTextColor="#BDBDBD"
-        />
-        <TextInput
-          value={email}
-          onChangeText={setEmail}
-          style={styles.input}
-          placeholder="Адреса електронної пошти"
-          placeholderTextColor="#BDBDBD"
-        />
-        <TextInput
-          value={password}
-          onChangeText={setPassword}
-          style={styles.input}
-          placeholder="пароль"
-          placeholderTextColor="#BDBDBD"
-          secureTextEntry={passwordVisibility}
-        />
-        <Pressable
-          style={styles.visibilPassword}
-          onPress={handlePasswordVisibility}
-        >
-          <Text style={styles.visibil}>
-            {passwordVisibility ? "Показати" : "Сховати"}
-          </Text>
-        </Pressable>
-        <TouchableOpacity style={styles.button} onPress={onRegistration}>
-          <Text style={styles.textButton}>Зареєструватися</Text>
-        </TouchableOpacity>
-        <View style={styles.login}>
-          <Text style={styles.tologin}>Вже є акаунт?</Text>
-          <TouchableOpacity>
-            <Text style={styles.tologin}> Увійти</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+      <ImageBackground
+        source={PhoneImage}
+        resizeMode="cover"
+        style={styles.image}
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.registrationScreen}>
+            <View style={styles.registrationAvatar}></View>
+            <Image style={styles.closeButton} source={closeButton} />
+            <Text style={styles.registration}>Реєстрація</Text>
+            <TextInput
+              value={name}
+              onChangeText={setName}
+              onFocus={this.focusedInput}
+              style={styles.input}
+              placeholder="Логін"
+              placeholderTextColor="#BDBDBD"
+            />
+            <TextInput
+              value={email}
+              onChangeText={setEmail}
+              style={styles.input}
+              placeholder="Адреса електронної пошти"
+              placeholderTextColor="#BDBDBD"
+            />
+            <TextInput
+              value={password}
+              onChangeText={setPassword}
+              style={styles.input}
+              placeholder="пароль"
+              placeholderTextColor="#BDBDBD"
+              secureTextEntry={passwordVisibility}
+            />
+            <Pressable
+              style={styles.visibilPassword}
+              onPress={handlePasswordVisibility}
+            >
+              <Text style={styles.visibil}>
+                {passwordVisibility ? "Показати" : "Сховати"}
+              </Text>
+            </Pressable>
+            <TouchableOpacity style={styles.button} onPress={onRegistration}>
+              <Text style={styles.textButton}>Зареєструватися</Text>
+            </TouchableOpacity>
+            <View style={styles.login}>
+              <Text style={styles.tologin}>Вже є акаунт?</Text>
+              <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+                <Text style={styles.tologin}> Увійти</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </ImageBackground>
     </TouchableWithoutFeedback>
   );
 }
 export default RegistrationScreen;
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  image: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    flexDirection: "column-reverse",
+  },
   registration: {
     textAlign: "center",
     fontWeight: 500,
